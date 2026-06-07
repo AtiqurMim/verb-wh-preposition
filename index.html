@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎓 English Learning Adventure</title>
+
+<style>
+body{
+font-family: Arial;
+margin:0;
+background: linear-gradient(135deg,#e3f2fd,#fff8e1);
+}
+
+header{
+background:#1a237e;
+color:white;
+padding:16px;
+text-align:center;
+}
+
+nav{
+display:flex;
+justify-content:center;
+background:#283593;
+flex-wrap:wrap;
+}
+
+nav button{
+margin:6px;
+padding:10px 14px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#64b5f6;
+color:white;
+font-weight:bold;
+}
+
+nav button:hover{background:#42a5f5;}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:15px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-top:20px;
+border-radius:18px;
+box-shadow:0 10px 20px rgba(0,0,0,0.15);
+text-align:center;
+animation: fade 0.5s ease-in;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+button.option{
+display:block;
+width:100%;
+margin:10px 0;
+padding:12px;
+border-radius:12px;
+border:none;
+background:#eeeeee;
+cursor:pointer;
+font-size:16px;
+}
+
+button.option:hover{
+background:#c8e6c9;
+transform:scale(1.02);
+}
+
+.scoreboard{
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.badge{
+display:inline-block;
+padding:6px 10px;
+background:gold;
+border-radius:10px;
+margin-top:10px;
+font-weight:bold;
+}
+
+.progress{
+height:10px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.bar{
+height:10px;
+background:#4caf50;
+width:0%;
+transition:0.3s;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>🎓 English Learning Adventure</h2>
+<p>Fun • Game • Kids Friendly • Class 4</p>
+</header>
+
+<nav>
+<button onclick="show('verb')">Verb</button>
+<button onclick="show('wh')">WH</button>
+<button onclick="show('prep')">Preposition</button>
+</nav>
+
+<div class="container">
+
+<div id="verb" class="card">
+<h3>🎮 Right Form of Verb</h3>
+<p id="vq"></p>
+<div id="vopts"></div>
+<p id="vmsg"></p>
+<div class="progress"><div id="vbar" class="bar"></div></div>
+<div class="scoreboard">Score: <span id="vscore">0</span></div>
+<div id="vbadge"></div>
+<button onclick="nextV()">Next</button>
+</div>
+
+<div id="wh" class="card" style="display:none;">
+<h3>❓ WH Question</h3>
+<p id="wq"></p>
+<div id="wopts"></div>
+<p id="wmsg"></p>
+<div class="progress"><div id="wbar" class="bar"></div></div>
+<div class="scoreboard">Score: <span id="wscore">0</span></div>
+<div id="wbadge"></div>
+<button onclick="nextW()">Next</button>
+</div>
+
+<div id="prep" class="card" style="display:none;">
+<h3>📦 Preposition Game</h3>
+<p id="pq"></p>
+<div id="popts"></div>
+<p id="pmsg"></p>
+<div class="progress"><div id="pbar" class="bar"></div></div>
+<div class="scoreboard">Score: <span id="pscore">0</span></div>
+<div id="pbadge"></div>
+<button onclick="nextP()">Next</button>
+</div>
+
+</div>
+
+<script>
+
+let v=0,w=0,p=0;
+let vs=0,ws=0,ps=0;
+
+const V=[
+{q:"He ___ to school every day",o:["go","goes","going"],a:"goes"},
+{q:"She is ___ a song",o:["sing","sings","singing"],a:"singing"},
+{q:"I ___ a book",o:["read","reads","reading"],a:"read"}
+];
+
+const W=[
+{q:"___ is your name?",o:["Who","What","Where"],a:"What"},
+{q:"___ is your teacher?",o:["Who","What","Where"],a:"Who"},
+{q:"___ do you live?",o:["Who","What","Where"],a:"Where"}
+];
+
+const P=[
+{q:"Cat is ___ the table",o:["on","in","under"],a:"on"},
+{q:"Book is ___ bag",o:["in","on","under"],a:"in"},
+{q:"Dog is ___ bed",o:["under","on","in"],a:"under"}
+];
+
+function show(id){
+["verb","wh","prep"].forEach(x=>document.getElementById(x).style.display="none");
+document.getElementById(id).style.display="block";
+}
+
+function renderOptions(arr,div,checkFn){
+div.innerHTML="";
+arr.forEach(opt=>{
+let b=document.createElement("button");
+b.className="option";
+b.innerText=opt;
+b.onclick=()=>checkFn(opt);
+div.appendChild(b);
+});
+}
+
+function updateBadge(score,id){
+let b="";
+if(score>=3) b="🏆 Genius Kid!";
+else if(score>=2) b="⭐ Good Job!";
+else if(score>=1) b="👍 Keep Going!";
+document.getElementById(id).innerHTML=b?`<div class="badge">${b}</div>`:"";
+}
+
+function updateBar(score,id){
+document.getElementById(id).style.width=(score/3*100)+"%";
+}
+
+function Vload(){
+let q=V[v];
+document.getElementById("vq").innerText=q.q;
+renderOptions(q.o,document.getElementById("vopts"),Vcheck);
+}
+
+function Vcheck(ans){
+if(ans===V[v].a){vs++;document.getElementById("vmsg").innerText="🎉 Correct!";}
+else document.getElementById("vmsg").innerText="❌ Try again";
+document.getElementById("vscore").innerText=vs;
+updateBadge(vs,"vbadge");
+updateBar(vs,"vbar");
+}
+
+function nextV(){v=(v+1)%V.length;Vload();document.getElementById("vmsg").innerText="";}
+
+function Wload(){
+let q=W[w];
+document.getElementById("wq").innerText=q.q;
+renderOptions(q.o,document.getElementById("wopts"),Wcheck);
+}
+
+function Wcheck(ans){
+if(ans===W[w].a){ws++;document.getElementById("wmsg").innerText="🎉 Correct!";}
+else document.getElementById("wmsg").innerText="❌ Try again";
+document.getElementById("wscore").innerText=ws;
+updateBadge(ws,"wbadge");
+updateBar(ws,"wbar");
+}
+
+function nextW(){w=(w+1)%W.length;Wload();document.getElementById("wmsg").innerText="";}
+
+function Pload(){
+let q=P[p];
+document.getElementById("pq").innerText=q.q;
+renderOptions(q.o,document.getElementById("popts"),Pcheck);
+}
+
+function Pcheck(ans){
+if(ans===P[p].a){ps++;document.getElementById("pmsg").innerText="🎉 Correct!";}
+else document.getElementById("pmsg").innerText="❌ Try again";
+document.getElementById("pscore").innerText=ps;
+updateBadge(ps,"pbadge");
+updateBar(ps,"pbar");
+}
+
+function nextP(){p=(p+1)%P.length;Pload();document.getElementById("pmsg").innerText="";}
+
+Vload();Wload();Pload();
+
+</script>
+
+</body>
+</html>
