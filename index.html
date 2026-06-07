@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kids English Learning Pro</title>
+<title>Bilingual Duolingo Kids English</title>
 
 <style>
 body{
 margin:0;
 font-family: Arial;
-background:#f4f7ff;
+background:#f5f7ff;
 }
 
 header{
@@ -38,24 +38,24 @@ font-weight:bold;
 }
 
 .container{
-max-width:800px;
+max-width:850px;
 margin:auto;
 padding:15px;
 }
 
 .card{
 background:white;
-padding:18px;
+padding:20px;
 margin-top:15px;
 border-radius:15px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-.lesson{
+.block{
 background:#fff7ed;
 padding:12px;
 border-left:5px solid #f59e0b;
-margin-bottom:15px;
+margin-bottom:12px;
 }
 
 .option{
@@ -86,8 +86,8 @@ opacity:0.85;
 <body>
 
 <header>
-<h2>🎓 Kids English Learning (Teacher Mode)</h2>
-<p>বাংলা → বুঝো → Practice → Master</p>
+<h2>🎓 Bilingual Duolingo Kids English</h2>
+<p>English + বাংলা একসাথে শেখা (Line-by-Line)</p>
 </header>
 
 <nav>
@@ -104,51 +104,63 @@ opacity:0.85;
 
 let state={
 topic:"verb",
-step:0,
-qIndex:0
+step:0
 };
 
 const DATA={
 
 verb:{
+
 lesson:[
+"📘 Right Form of Verb means using correct verb form according to sentence.",
 "📘 Right Form of Verb মানে হলো sentence অনুযায়ী verb-এর সঠিক রূপ ব্যবহার করা।",
+
 "",
-"👉 Verb হলো কাজের নাম:",
-"play = খেলা | go = যাওয়া | eat = খাওয়া",
-"",
-"👉 Sentence-এ subject (কে কাজ করছে) দেখে verb বদলায়"
+"👉 Verb is a word that shows action.",
+"👉 Verb হলো এমন শব্দ যা কাজ বোঝায়।",
+
+"play = to play a game",
+"play = খেলা করা",
+
+"go = to move somewhere",
+"go = কোথাও যাওয়া",
+
+"eat = to consume food",
+"eat = খাবার খাওয়া"
 ],
 
 rule:[
-"🟡 Rule 1:",
-"He / She / It থাকলে verb + s/es হয়",
+"He / She / It → verb + s/es",
+"He / She / It → verb-এর সাথে s/es যোগ হয়",
+
 "",
+"📌 Why?",
+"When subject is single person or thing, verb changes.",
 "📌 কেন?",
-"একজন ব্যক্তি/একটা জিনিস হলে ইংরেজিতে verb পরিবর্তন হয়"
+"যখন একজন ব্যক্তি বা একটি জিনিস বোঝায়, তখন verb পরিবর্তিত হয়।"
 ],
 
 examples:[
 "✔ He goes to school",
-"✔ She reads book",
-"✔ The cat eats fish"
+"✔ He goes to school → সে স্কুলে যায়",
+
+"✔ She reads books",
+"✔ She reads books → সে বই পড়ে",
+
+"✔ The cat eats fish",
+"✔ The cat eats fish → বিড়াল মাছ খায়"
 ],
 
-sRule:[
-"🟠 কখন 's' লাগে?",
-"play → plays",
-"read → reads",
-"eat → eats"
-],
+es_rule:[
+"🔴 When to add 'es'?",
+"If verb ends with s / sh / ch / x / o",
+"🔴 কখন 'es' যোগ হয়?",
 
-esRule:[
-"🔴 কখন 'es' লাগে?",
-"যদি verb শেষে থাকে: s / sh / ch / x / o",
 "",
-"go → goes",
-"watch → watches",
-"wash → washes",
-"fix → fixes"
+"go → goes → যাওয়া",
+"watch → watches → দেখা",
+"wash → washes → ধোয়া",
+"fix → fixes → ঠিক করা"
 ],
 
 questions:[
@@ -156,54 +168,69 @@ questions:[
 q:"He ___ to school every day",
 o:["go","goes","going"],
 a:"goes",
-why:"He আছে → তাই verb + s/es লাগে → go → goes"
-},
-{
-q:"She ___ books",
-o:["read","reads","reading"],
-a:"reads",
-why:"She আছে → reads হবে"
+why:"He is singular subject → verb + s/es → goes"
 }
 ]
 },
 
 wh:{
+
 lesson:[
-"❓ WH Question দিয়ে তথ্য জানা হয়",
-"Who = মানুষ | What = জিনিস | Where = জায়গা"
+"❓ WH Question is used to ask information",
+"❓ WH Question ব্যবহার করা হয় তথ্য জানার জন্য",
+
+"Who = person → মানুষ",
+"What = thing → জিনিস",
+"Where = place → জায়গা"
 ],
+
 examples:[
 "✔ What is your name?",
-"✔ Where do you live?"
+"✔ What is your name? → তোমার নাম কি?",
+
+"✔ Where do you live?",
+"✔ Where do you live? → তুমি কোথায় থাকো?"
 ],
+
 questions:[
 {
 q:"___ is your name?",
 o:["Who","What","Where"],
 a:"What",
-why:"নাম জানতে What ব্যবহার হয়"
+why:"Name জানতে What ব্যবহার করা হয়"
 }
 ]
 },
 
 prep:{
+
 lesson:[
-"📦 Preposition জায়গা বোঝায়",
-"in = ভেতরে | on = উপর | under = নিচে"
+"📦 Preposition shows position or place",
+"📦 Preposition জায়গা বা অবস্থান বোঝায়",
+
+"in = inside → ভেতরে",
+"on = above → উপরে",
+"under = below → নিচে"
 ],
+
 examples:[
 "✔ Cat is on the table",
-"✔ Book is in the bag"
+"✔ Cat is on the table → বিড়াল টেবিলের উপর আছে",
+
+"✔ Book is in the bag",
+"✔ Book is in the bag → বই ব্যাগের ভিতরে আছে"
 ],
+
 questions:[
 {
 q:"Cat is ___ the table",
 o:["on","in","under"],
 a:"on",
-why:"টেবিলের উপর = on"
+why:"on means surface → উপর"
 }
 ]
 }
+
 };
 
 function load(topic){
@@ -219,75 +246,60 @@ let app=document.getElementById("app");
 
 let html="";
 
-/* STEP 1: LESSON (VERY DETAILED) */
+/* STEP 1: LESSON */
 if(state.step===0){
 
-html+=`<div class="lesson"><b>📘 Lesson (শেখা)</b><br><br>`;
+html+=`<div class="block"><b>📘 Lesson (English + বাংলা)</b><br><br>`;
 
 t.lesson.forEach(l=>{
 html+=`<div>${l}</div>`;
 });
 
 html+=`</div>
-<button onclick="next()">👉 Next: Rule</button>`;
+<button onclick="next()">👉 Next</button>`;
 }
 
 /* STEP 2: RULE */
-else if(state.step===1){
+else if(state.step===1 && t.rule){
 
-html+=`<div class="lesson"><b>📌 Rule (নিয়ম)</b><br><br>`;
+html+=`<div class="block"><b>📌 Rule (নিয়ম)</b><br><br>`;
 
-if(t.rule){
 t.rule.forEach(r=>{
 html+=`<div>${r}</div>`;
 });
-}
 
 html+=`</div>
-<button onclick="next()">👉 Next: Examples</button>`;
+<button onclick="next()">👉 Next</button>`;
 }
 
-/* STEP 3: EXTRA RULE (verb only) */
-else if(state.step===2 && t.sRule){
+/* STEP 3: EXTRA RULE */
+else if(state.step===2 && t.es_rule){
 
-html+=`<div class="lesson"><b>🧠 Detailed Rule</b><br><br>`;
+html+=`<div class="block"><b>🧠 Advanced Rule</b><br><br>`;
 
-t.sRule.forEach(r=>{
+t.es_rule.forEach(r=>{
 html+=`<div>${r}</div>`;
 });
 
 html+=`</div>
-<button onclick="next()">👉 Next: es Rule</button>`;
+<button onclick="next()">👉 Next</button>`;
 }
 
-/* STEP 4: ES RULE (verb only) */
-else if(state.step===3 && t.esRule){
+/* STEP 4: EXAMPLES */
+else if(state.step>=3){
 
-html+=`<div class="lesson"><b>🧠 Advanced Rule</b><br><br>`;
-
-t.esRule.forEach(r=>{
-html+=`<div>${r}</div>`;
-});
-
-html+=`</div>
-<button onclick="next()">👉 Examples</button>`;
-}
-
-/* STEP 5: EXAMPLES */
-else if(state.step>=4 || !t.sRule){
-
-html+=`<div class="lesson"><b>📌 Examples</b><br><br>`;
+html+=`<div class="block"><b>📌 Examples (English + বাংলা)</b><br><br>`;
 
 t.examples.forEach(e=>{
 html+=`<div>${e}</div>`;
 });
 
 html+=`</div>
-<button onclick="next()">👉 Start Practice</button>`;
+<button onclick="next()">👉 Practice</button>`;
 }
 
 /* QUESTIONS */
-if(state.step>=5 || (!t.sRule && state.step===2)){
+if(state.step>=4){
 
 let q=t.questions[0];
 
@@ -318,18 +330,18 @@ let q=DATA[state.topic].questions[0];
 
 if(opt===q.a){
 document.getElementById("fb").innerHTML=
-`<span class="correct">✔ সঠিক!</span><br><br>
+`<span class="correct">✔ Correct</span><br><br>
 👉 ${q.why}`;
 }
 else{
 document.getElementById("fb").innerHTML=
-`<span class="wrong">❌ ভুল</span><br><br>
-✔ সঠিক উত্তর: ${q.a}<br><br>
+`<span class="wrong">❌ Wrong</span><br><br>
+✔ Correct Answer: ${q.a}<br><br>
 👉 ${q.why}`;
 }
 
 setTimeout(()=>{
-state.step=5;
+state.step=4;
 render();
 },1200);
 }
