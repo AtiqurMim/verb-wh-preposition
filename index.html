@@ -1,121 +1,102 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎓 English Learning Adventure</title>
+<title>Mini Duolingo Kids (Bangla Edition)</title>
 
 <style>
 body{
-font-family: Arial;
 margin:0;
-background: linear-gradient(135deg,#e3f2fd,#fff8e1);
+font-family: Arial;
+background:#f5f7ff;
 }
 
 header{
-background:#1a237e;
+background:#1e40af;
 color:white;
-padding:16px;
 text-align:center;
+padding:15px;
 }
 
 nav{
 display:flex;
-justify-content:center;
-background:#283593;
 flex-wrap:wrap;
+justify-content:center;
+background:#1d4ed8;
 }
 
 nav button{
-margin:6px;
+margin:5px;
 padding:10px 14px;
 border:none;
-border-radius:10px;
-cursor:pointer;
-background:#64b5f6;
+border-radius:8px;
+background:#60a5fa;
 color:white;
+cursor:pointer;
 font-weight:bold;
 }
 
-nav button:hover{background:#42a5f5;}
-
 .container{
-max-width:700px;
+max-width:750px;
 margin:auto;
 padding:15px;
 }
 
 .card{
 background:white;
-padding:20px;
-margin-top:20px;
-border-radius:18px;
-box-shadow:0 10px 20px rgba(0,0,0,0.15);
-text-align:center;
-animation: fade 0.5s ease-in;
+margin-top:15px;
+padding:18px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;transform:translateY(0);}
+.explain{
+background:#fff7ed;
+border-left:5px solid #f59e0b;
+padding:10px;
+margin-bottom:15px;
 }
 
-button.option{
+.option{
 display:block;
 width:100%;
-margin:10px 0;
-padding:12px;
-border-radius:12px;
+padding:10px;
+margin:8px 0;
 border:none;
-background:#eeeeee;
+border-radius:10px;
 cursor:pointer;
+background:#eee;
 font-size:16px;
 }
 
-button.option:hover{
-background:#c8e6c9;
-transform:scale(1.02);
-}
+.option:hover{background:#d1fae5;}
 
-.scoreboard{
-font-size:18px;
-font-weight:bold;
-margin-top:10px;
-}
+.correct{color:green;font-weight:bold;}
+.wrong{color:red;font-weight:bold;}
 
 .badge{
 display:inline-block;
+margin-top:10px;
 padding:6px 10px;
 background:gold;
 border-radius:10px;
-margin-top:10px;
 font-weight:bold;
 }
 
-.progress{
-height:10px;
-background:#ddd;
-border-radius:20px;
-overflow:hidden;
+.xp{
+font-weight:bold;
 margin-top:10px;
 }
-
-.bar{
-height:10px;
-background:#4caf50;
-width:0%;
-transition:0.3s;
-}
-
 </style>
 </head>
 
 <body>
 
 <header>
-<h2>🎓 English Learning Adventure</h2>
-<p>Fun • Game • Kids Friendly • Class 4</p>
+<h2>🎓 Mini Duolingo (Kids Edition)</h2>
+<p>বাংলা শেখা → Practice → Explanation</p>
+<div class="xp">⭐ XP: <span id="xp">0</span></div>
 </header>
 
 <nav>
@@ -126,141 +107,178 @@ transition:0.3s;
 
 <div class="container">
 
+<!-- VERB -->
 <div id="verb" class="card">
-<h3>🎮 Right Form of Verb</h3>
+
+<h3>📘 Right Form of Verb (বাংলায় শেখা)</h3>
+
+<div class="explain">
+<b>👉 কী শিখবে?</b><br>
+Sentence অনুযায়ী verb-এর সঠিক form ব্যবহার করা।<br><br>
+
+<b>📌 Real Example:</b><br>
+✔ He goes to school<br>
+❌ He go to school<br><br>
+
+<b>📌 Rule:</b><br>
+He/She/It → verb + s/es<br>
+I/We/They → base verb
+</div>
+
 <p id="vq"></p>
 <div id="vopts"></div>
-<p id="vmsg"></p>
-<div class="progress"><div id="vbar" class="bar"></div></div>
-<div class="scoreboard">Score: <span id="vscore">0</span></div>
-<div id="vbadge"></div>
-<button onclick="nextV()">Next</button>
+<p id="vfb"></p>
+
 </div>
 
+<!-- WH -->
 <div id="wh" class="card" style="display:none;">
+
 <h3>❓ WH Question</h3>
+
+<div class="explain">
+Who = মানুষ<br>
+What = জিনিস<br>
+Where = জায়গা
+</div>
+
 <p id="wq"></p>
 <div id="wopts"></div>
-<p id="wmsg"></p>
-<div class="progress"><div id="wbar" class="bar"></div></div>
-<div class="scoreboard">Score: <span id="wscore">0</span></div>
-<div id="wbadge"></div>
-<button onclick="nextW()">Next</button>
+<p id="wfb"></p>
+
 </div>
 
+<!-- PREP -->
 <div id="prep" class="card" style="display:none;">
-<h3>📦 Preposition Game</h3>
+
+<h3>📦 Preposition</h3>
+
+<div class="explain">
+in = ভেতরে<br>
+on = উপর<br>
+under = নিচে
+</div>
+
 <p id="pq"></p>
 <div id="popts"></div>
-<p id="pmsg"></p>
-<div class="progress"><div id="pbar" class="bar"></div></div>
-<div class="scoreboard">Score: <span id="pscore">0</span></div>
-<div id="pbadge"></div>
-<button onclick="nextP()">Next</button>
+<p id="pfb"></p>
+
 </div>
 
 </div>
 
 <script>
 
-let v=0,w=0,p=0;
-let vs=0,ws=0,ps=0;
+let xp = localStorage.getItem("xp") || 0;
+document.getElementById("xp").innerText = xp;
 
-const V=[
-{q:"He ___ to school every day",o:["go","goes","going"],a:"goes"},
-{q:"She is ___ a song",o:["sing","sings","singing"],a:"singing"},
-{q:"I ___ a book",o:["read","reads","reading"],a:"read"}
-];
-
-const W=[
-{q:"___ is your name?",o:["Who","What","Where"],a:"What"},
-{q:"___ is your teacher?",o:["Who","What","Where"],a:"Who"},
-{q:"___ do you live?",o:["Who","What","Where"],a:"Where"}
-];
-
-const P=[
-{q:"Cat is ___ the table",o:["on","in","under"],a:"on"},
-{q:"Book is ___ bag",o:["in","on","under"],a:"in"},
-{q:"Dog is ___ bed",o:["under","on","in"],a:"under"}
-];
+function addXP(){
+xp++;
+localStorage.setItem("xp",xp);
+document.getElementById("xp").innerText=xp;
+}
 
 function show(id){
 ["verb","wh","prep"].forEach(x=>document.getElementById(x).style.display="none");
 document.getElementById(id).style.display="block";
 }
 
-function renderOptions(arr,div,checkFn){
-div.innerHTML="";
-arr.forEach(opt=>{
+/* ---------------- DATA ---------------- */
+
+const V=[
+{
+q:"He ___ to school daily",
+o:["go","goes","going"],
+a:"goes",
+why:"He/She/It হলে verb + s/es হয়"
+},
+{
+q:"They ___ football",
+o:["play","plays","playing"],
+a:"play",
+why:"They plural তাই base verb"
+}
+];
+
+const W=[
+{
+q:"___ is your name?",
+o:["Who","What","Where"],
+a:"What",
+why:"নাম জানতে What ব্যবহার হয়"
+},
+{
+q:"___ is your father?",
+o:["Who","What","Where"],
+a:"Who",
+why:"মানুষের জন্য Who"
+}
+];
+
+const P=[
+{
+q:"Cat is ___ the table",
+o:["on","in","under"],
+a:"on",
+why:"উপর = on"
+},
+{
+q:"Book is ___ bag",
+o:["in","on","under"],
+a:"in",
+why:"ভেতরে = in"
+}
+];
+
+/* ---------------- ENGINE ---------------- */
+
+function render(q,optsDiv,fbDiv,type){
+optsDiv.innerHTML="";
+fbDiv.innerHTML="";
+
+document.querySelector("#"+type+"q")?.innerText;
+
+q.o.forEach(opt=>{
 let b=document.createElement("button");
 b.className="option";
 b.innerText=opt;
-b.onclick=()=>checkFn(opt);
-div.appendChild(b);
+
+b.onclick=()=>{
+
+if(opt===q.a){
+fbDiv.innerHTML=`<span class="correct">✔ Correct!</span><br>👉 ${q.why}`;
+addXP();
+}else{
+fbDiv.innerHTML=`<span class="wrong">❌ Wrong</span><br>
+✔ Correct Answer: ${q.a}<br>👉 ${q.why}`;
+}
+
+};
+
+optsDiv.appendChild(b);
 });
 }
 
-function updateBadge(score,id){
-let b="";
-if(score>=3) b="🏆 Genius Kid!";
-else if(score>=2) b="⭐ Good Job!";
-else if(score>=1) b="👍 Keep Going!";
-document.getElementById(id).innerHTML=b?`<div class="badge">${b}</div>`:"";
+/* ---------------- LOADERS ---------------- */
+
+function loadVerb(){
+document.getElementById("vq").innerText=V[0].q;
+render(V[0],document.getElementById("vopts"),document.getElementById("vfb"),"v");
 }
 
-function updateBar(score,id){
-document.getElementById(id).style.width=(score/3*100)+"%";
+function loadWH(){
+document.getElementById("wq").innerText=W[0].q;
+render(W[0],document.getElementById("wopts"),document.getElementById("wfb"),"w");
 }
 
-function Vload(){
-let q=V[v];
-document.getElementById("vq").innerText=q.q;
-renderOptions(q.o,document.getElementById("vopts"),Vcheck);
+function loadPrep(){
+document.getElementById("pq").innerText=P[0].q;
+render(P[0],document.getElementById("popts"),document.getElementById("pfb"),"p");
 }
 
-function Vcheck(ans){
-if(ans===V[v].a){vs++;document.getElementById("vmsg").innerText="🎉 Correct!";}
-else document.getElementById("vmsg").innerText="❌ Try again";
-document.getElementById("vscore").innerText=vs;
-updateBadge(vs,"vbadge");
-updateBar(vs,"vbar");
-}
-
-function nextV(){v=(v+1)%V.length;Vload();document.getElementById("vmsg").innerText="";}
-
-function Wload(){
-let q=W[w];
-document.getElementById("wq").innerText=q.q;
-renderOptions(q.o,document.getElementById("wopts"),Wcheck);
-}
-
-function Wcheck(ans){
-if(ans===W[w].a){ws++;document.getElementById("wmsg").innerText="🎉 Correct!";}
-else document.getElementById("wmsg").innerText="❌ Try again";
-document.getElementById("wscore").innerText=ws;
-updateBadge(ws,"wbadge");
-updateBar(ws,"wbar");
-}
-
-function nextW(){w=(w+1)%W.length;Wload();document.getElementById("wmsg").innerText="";}
-
-function Pload(){
-let q=P[p];
-document.getElementById("pq").innerText=q.q;
-renderOptions(q.o,document.getElementById("popts"),Pcheck);
-}
-
-function Pcheck(ans){
-if(ans===P[p].a){ps++;document.getElementById("pmsg").innerText="🎉 Correct!";}
-else document.getElementById("pmsg").innerText="❌ Try again";
-document.getElementById("pscore").innerText=ps;
-updateBadge(ps,"pbadge");
-updateBar(ps,"pbar");
-}
-
-function nextP(){p=(p+1)%P.length;Pload();document.getElementById("pmsg").innerText="";}
-
-Vload();Wload();Pload();
+loadVerb();
+loadWH();
+loadPrep();
 
 </script>
 
