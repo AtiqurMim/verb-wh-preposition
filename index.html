@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Duolingo Kids (Bangla Edition)</title>
+<title>Kids English Learning Pro</title>
 
 <style>
 body{
 margin:0;
 font-family: Arial;
-background:#f5f7ff;
+background:#f4f7ff;
 }
 
 header{
-background:#1e40af;
+background:#1e3a8a;
 color:white;
 text-align:center;
 padding:15px;
@@ -21,9 +21,9 @@ padding:15px;
 
 nav{
 display:flex;
-flex-wrap:wrap;
 justify-content:center;
-background:#1d4ed8;
+flex-wrap:wrap;
+background:#2563eb;
 }
 
 nav button{
@@ -38,23 +38,23 @@ font-weight:bold;
 }
 
 .container{
-max-width:750px;
+max-width:800px;
 margin:auto;
 padding:15px;
 }
 
 .card{
 background:white;
-margin-top:15px;
 padding:18px;
+margin-top:15px;
 border-radius:15px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-.explain{
+.lesson{
 background:#fff7ed;
+padding:12px;
 border-left:5px solid #f59e0b;
-padding:10px;
 margin-bottom:15px;
 }
 
@@ -65,8 +65,8 @@ padding:10px;
 margin:8px 0;
 border:none;
 border-radius:10px;
-cursor:pointer;
 background:#eee;
+cursor:pointer;
 font-size:16px;
 }
 
@@ -75,210 +75,266 @@ font-size:16px;
 .correct{color:green;font-weight:bold;}
 .wrong{color:red;font-weight:bold;}
 
-.badge{
-display:inline-block;
-margin-top:10px;
-padding:6px 10px;
-background:gold;
-border-radius:10px;
-font-weight:bold;
-}
-
-.xp{
-font-weight:bold;
-margin-top:10px;
+.small{
+font-size:14px;
+opacity:0.85;
 }
 </style>
+
 </head>
 
 <body>
 
 <header>
-<h2>🎓 Mini Duolingo (Kids Edition)</h2>
-<p>বাংলা শেখা → Practice → Explanation</p>
-<div class="xp">⭐ XP: <span id="xp">0</span></div>
+<h2>🎓 Kids English Learning (Teacher Mode)</h2>
+<p>বাংলা → বুঝো → Practice → Master</p>
 </header>
 
 <nav>
-<button onclick="show('verb')">Verb</button>
-<button onclick="show('wh')">WH</button>
-<button onclick="show('prep')">Preposition</button>
+<button onclick="load('verb')">Verb</button>
+<button onclick="load('wh')">WH</button>
+<button onclick="load('prep')">Preposition</button>
 </nav>
 
 <div class="container">
-
-<!-- VERB -->
-<div id="verb" class="card">
-
-<h3>📘 Right Form of Verb (বাংলায় শেখা)</h3>
-
-<div class="explain">
-<b>👉 কী শিখবে?</b><br>
-Sentence অনুযায়ী verb-এর সঠিক form ব্যবহার করা।<br><br>
-
-<b>📌 Real Example:</b><br>
-✔ He goes to school<br>
-❌ He go to school<br><br>
-
-<b>📌 Rule:</b><br>
-He/She/It → verb + s/es<br>
-I/We/They → base verb
-</div>
-
-<p id="vq"></p>
-<div id="vopts"></div>
-<p id="vfb"></p>
-
-</div>
-
-<!-- WH -->
-<div id="wh" class="card" style="display:none;">
-
-<h3>❓ WH Question</h3>
-
-<div class="explain">
-Who = মানুষ<br>
-What = জিনিস<br>
-Where = জায়গা
-</div>
-
-<p id="wq"></p>
-<div id="wopts"></div>
-<p id="wfb"></p>
-
-</div>
-
-<!-- PREP -->
-<div id="prep" class="card" style="display:none;">
-
-<h3>📦 Preposition</h3>
-
-<div class="explain">
-in = ভেতরে<br>
-on = উপর<br>
-under = নিচে
-</div>
-
-<p id="pq"></p>
-<div id="popts"></div>
-<p id="pfb"></p>
-
-</div>
-
+<div id="app" class="card"></div>
 </div>
 
 <script>
 
-let xp = localStorage.getItem("xp") || 0;
-document.getElementById("xp").innerText = xp;
+let state={
+topic:"verb",
+step:0,
+qIndex:0
+};
 
-function addXP(){
-xp++;
-localStorage.setItem("xp",xp);
-document.getElementById("xp").innerText=xp;
-}
+const DATA={
 
-function show(id){
-["verb","wh","prep"].forEach(x=>document.getElementById(x).style.display="none");
-document.getElementById(id).style.display="block";
-}
+verb:{
+lesson:[
+"📘 Right Form of Verb মানে হলো sentence অনুযায়ী verb-এর সঠিক রূপ ব্যবহার করা।",
+"",
+"👉 Verb হলো কাজের নাম:",
+"play = খেলা | go = যাওয়া | eat = খাওয়া",
+"",
+"👉 Sentence-এ subject (কে কাজ করছে) দেখে verb বদলায়"
+],
 
-/* ---------------- DATA ---------------- */
+rule:[
+"🟡 Rule 1:",
+"He / She / It থাকলে verb + s/es হয়",
+"",
+"📌 কেন?",
+"একজন ব্যক্তি/একটা জিনিস হলে ইংরেজিতে verb পরিবর্তন হয়"
+],
 
-const V=[
+examples:[
+"✔ He goes to school",
+"✔ She reads book",
+"✔ The cat eats fish"
+],
+
+sRule:[
+"🟠 কখন 's' লাগে?",
+"play → plays",
+"read → reads",
+"eat → eats"
+],
+
+esRule:[
+"🔴 কখন 'es' লাগে?",
+"যদি verb শেষে থাকে: s / sh / ch / x / o",
+"",
+"go → goes",
+"watch → watches",
+"wash → washes",
+"fix → fixes"
+],
+
+questions:[
 {
-q:"He ___ to school daily",
+q:"He ___ to school every day",
 o:["go","goes","going"],
 a:"goes",
-why:"He/She/It হলে verb + s/es হয়"
+why:"He আছে → তাই verb + s/es লাগে → go → goes"
 },
 {
-q:"They ___ football",
-o:["play","plays","playing"],
-a:"play",
-why:"They plural তাই base verb"
+q:"She ___ books",
+o:["read","reads","reading"],
+a:"reads",
+why:"She আছে → reads হবে"
 }
-];
+]
+},
 
-const W=[
+wh:{
+lesson:[
+"❓ WH Question দিয়ে তথ্য জানা হয়",
+"Who = মানুষ | What = জিনিস | Where = জায়গা"
+],
+examples:[
+"✔ What is your name?",
+"✔ Where do you live?"
+],
+questions:[
 {
 q:"___ is your name?",
 o:["Who","What","Where"],
 a:"What",
 why:"নাম জানতে What ব্যবহার হয়"
-},
-{
-q:"___ is your father?",
-o:["Who","What","Where"],
-a:"Who",
-why:"মানুষের জন্য Who"
 }
-];
+]
+},
 
-const P=[
+prep:{
+lesson:[
+"📦 Preposition জায়গা বোঝায়",
+"in = ভেতরে | on = উপর | under = নিচে"
+],
+examples:[
+"✔ Cat is on the table",
+"✔ Book is in the bag"
+],
+questions:[
 {
 q:"Cat is ___ the table",
 o:["on","in","under"],
 a:"on",
-why:"উপর = on"
-},
-{
-q:"Book is ___ bag",
-o:["in","on","under"],
-a:"in",
-why:"ভেতরে = in"
+why:"টেবিলের উপর = on"
 }
-];
-
-/* ---------------- ENGINE ---------------- */
-
-function render(q,optsDiv,fbDiv,type){
-optsDiv.innerHTML="";
-fbDiv.innerHTML="";
-
-document.querySelector("#"+type+"q")?.innerText;
-
-q.o.forEach(opt=>{
-let b=document.createElement("button");
-b.className="option";
-b.innerText=opt;
-
-b.onclick=()=>{
-
-if(opt===q.a){
-fbDiv.innerHTML=`<span class="correct">✔ Correct!</span><br>👉 ${q.why}`;
-addXP();
-}else{
-fbDiv.innerHTML=`<span class="wrong">❌ Wrong</span><br>
-✔ Correct Answer: ${q.a}<br>👉 ${q.why}`;
+]
 }
-
 };
 
-optsDiv.appendChild(b);
+function load(topic){
+state.topic=topic;
+state.step=0;
+render();
+}
+
+function render(){
+
+let t=DATA[state.topic];
+let app=document.getElementById("app");
+
+let html="";
+
+/* STEP 1: LESSON (VERY DETAILED) */
+if(state.step===0){
+
+html+=`<div class="lesson"><b>📘 Lesson (শেখা)</b><br><br>`;
+
+t.lesson.forEach(l=>{
+html+=`<div>${l}</div>`;
+});
+
+html+=`</div>
+<button onclick="next()">👉 Next: Rule</button>`;
+}
+
+/* STEP 2: RULE */
+else if(state.step===1){
+
+html+=`<div class="lesson"><b>📌 Rule (নিয়ম)</b><br><br>`;
+
+if(t.rule){
+t.rule.forEach(r=>{
+html+=`<div>${r}</div>`;
 });
 }
 
-/* ---------------- LOADERS ---------------- */
-
-function loadVerb(){
-document.getElementById("vq").innerText=V[0].q;
-render(V[0],document.getElementById("vopts"),document.getElementById("vfb"),"v");
+html+=`</div>
+<button onclick="next()">👉 Next: Examples</button>`;
 }
 
-function loadWH(){
-document.getElementById("wq").innerText=W[0].q;
-render(W[0],document.getElementById("wopts"),document.getElementById("wfb"),"w");
+/* STEP 3: EXTRA RULE (verb only) */
+else if(state.step===2 && t.sRule){
+
+html+=`<div class="lesson"><b>🧠 Detailed Rule</b><br><br>`;
+
+t.sRule.forEach(r=>{
+html+=`<div>${r}</div>`;
+});
+
+html+=`</div>
+<button onclick="next()">👉 Next: es Rule</button>`;
 }
 
-function loadPrep(){
-document.getElementById("pq").innerText=P[0].q;
-render(P[0],document.getElementById("popts"),document.getElementById("pfb"),"p");
+/* STEP 4: ES RULE (verb only) */
+else if(state.step===3 && t.esRule){
+
+html+=`<div class="lesson"><b>🧠 Advanced Rule</b><br><br>`;
+
+t.esRule.forEach(r=>{
+html+=`<div>${r}</div>`;
+});
+
+html+=`</div>
+<button onclick="next()">👉 Examples</button>`;
 }
 
-loadVerb();
-loadWH();
-loadPrep();
+/* STEP 5: EXAMPLES */
+else if(state.step>=4 || !t.sRule){
+
+html+=`<div class="lesson"><b>📌 Examples</b><br><br>`;
+
+t.examples.forEach(e=>{
+html+=`<div>${e}</div>`;
+});
+
+html+=`</div>
+<button onclick="next()">👉 Start Practice</button>`;
+}
+
+/* QUESTIONS */
+if(state.step>=5 || (!t.sRule && state.step===2)){
+
+let q=t.questions[0];
+
+html+=`
+<h3>${q.q}</h3>
+`;
+
+q.o.forEach(opt=>{
+html+=`
+<button class="option" onclick="check('${opt}')">${opt}</button>
+`;
+});
+
+html+=`<p id="fb"></p>`;
+}
+
+app.innerHTML=html;
+}
+
+function next(){
+state.step++;
+render();
+}
+
+function check(opt){
+
+let q=DATA[state.topic].questions[0];
+
+if(opt===q.a){
+document.getElementById("fb").innerHTML=
+`<span class="correct">✔ সঠিক!</span><br><br>
+👉 ${q.why}`;
+}
+else{
+document.getElementById("fb").innerHTML=
+`<span class="wrong">❌ ভুল</span><br><br>
+✔ সঠিক উত্তর: ${q.a}<br><br>
+👉 ${q.why}`;
+}
+
+setTimeout(()=>{
+state.step=5;
+render();
+},1200);
+}
+
+load("verb");
 
 </script>
 
