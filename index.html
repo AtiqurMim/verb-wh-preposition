@@ -3,91 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bilingual Duolingo Kids English</title>
+<title>AI Kids English Tutor</title>
 
 <style>
-body{
-margin:0;
-font-family: Arial;
-background:#f5f7ff;
-}
-
-header{
-background:#1e3a8a;
-color:white;
-text-align:center;
-padding:15px;
-}
-
-nav{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-background:#2563eb;
-}
-
-nav button{
-margin:5px;
-padding:10px 14px;
-border:none;
-border-radius:8px;
-background:#60a5fa;
-color:white;
-cursor:pointer;
-font-weight:bold;
-}
-
-.container{
-max-width:850px;
-margin:auto;
-padding:15px;
-}
-
-.card{
-background:white;
-padding:20px;
-margin-top:15px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.block{
-background:#fff7ed;
-padding:12px;
-border-left:5px solid #f59e0b;
-margin-bottom:12px;
-}
-
-.option{
-display:block;
-width:100%;
-padding:10px;
-margin:8px 0;
-border:none;
-border-radius:10px;
-background:#eee;
-cursor:pointer;
-font-size:16px;
-}
-
+body{margin:0;font-family:Arial;background:#f3f6ff;}
+header{background:#1e3a8a;color:white;padding:15px;text-align:center;}
+nav{display:flex;flex-wrap:wrap;justify-content:center;background:#2563eb;}
+nav button{margin:5px;padding:10px;border:none;border-radius:8px;background:#60a5fa;color:white;font-weight:bold;}
+.container{max-width:900px;margin:auto;padding:15px;}
+.card{background:white;padding:20px;margin-top:15px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+.block{background:#fff7ed;padding:12px;border-left:5px solid #f59e0b;margin-bottom:12px;}
+.option{display:block;width:100%;padding:10px;margin:8px 0;border:none;border-radius:10px;background:#eee;cursor:pointer;}
 .option:hover{background:#d1fae5;}
-
 .correct{color:green;font-weight:bold;}
 .wrong{color:red;font-weight:bold;}
-
-.small{
-font-size:14px;
-opacity:0.85;
-}
+.small{font-size:13px;opacity:0.8;}
 </style>
-
 </head>
 
 <body>
 
 <header>
-<h2>🎓 Bilingual Duolingo Kids English</h2>
-<p>English + বাংলা একসাথে শেখা (Line-by-Line)</p>
+<h2>🎓 English is Fun Aayat</h2>
+<p>Bangla + English Learning System</p>
+<p>⭐ XP: <span id="xp">0</span></p>
 </header>
 
 <nav>
@@ -102,215 +41,168 @@ opacity:0.85;
 
 <script>
 
-let state={
-topic:"verb",
-step:0
-};
+let xp = localStorage.getItem("xp") || 0;
+document.getElementById("xp").innerText = xp;
 
-const DATA={
+function addXP(){
+xp++;
+localStorage.setItem("xp",xp);
+document.getElementById("xp").innerText=xp;
+}
+
+/* ================= CURRICULUM ================= */
+
+const DATA = {
 
 verb:{
-
-lesson:[
-"📘 Right Form of Verb means using correct verb form according to sentence.",
-"📘 Right Form of Verb মানে হলো sentence অনুযায়ী verb-এর সঠিক রূপ ব্যবহার করা।",
-
-"",
-"👉 Verb is a word that shows action.",
-"👉 Verb হলো এমন শব্দ যা কাজ বোঝায়।",
-
-"play = to play a game",
-"play = খেলা করা",
-
-"go = to move somewhere",
-"go = কোথাও যাওয়া",
-
-"eat = to consume food",
-"eat = খাবার খাওয়া"
-],
-
-rule:[
-"He / She / It → verb + s/es",
-"He / She / It → verb-এর সাথে s/es যোগ হয়",
-
-"",
-"📌 Why?",
-"When subject is single person or thing, verb changes.",
-"📌 কেন?",
-"যখন একজন ব্যক্তি বা একটি জিনিস বোঝায়, তখন verb পরিবর্তিত হয়।"
-],
-
-examples:[
-"✔ He goes to school",
-"✔ He goes to school → সে স্কুলে যায়",
-
-"✔ She reads books",
-"✔ She reads books → সে বই পড়ে",
-
-"✔ The cat eats fish",
-"✔ The cat eats fish → বিড়াল মাছ খায়"
-],
-
-es_rule:[
-"🔴 When to add 'es'?",
-"If verb ends with s / sh / ch / x / o",
-"🔴 কখন 'es' যোগ হয়?",
-
-"",
-"go → goes → যাওয়া",
-"watch → watches → দেখা",
-"wash → washes → ধোয়া",
-"fix → fixes → ঠিক করা"
-],
-
-questions:[
+rules:[
 {
-q:"He ___ to school every day",
-o:["go","goes","going"],
-a:"goes",
-why:"He is singular subject → verb + s/es → goes"
+title:"Rule 1: He/She/It Rule",
+bn:"He/She/It থাকলে verb-এর সাথে s/es যোগ হয়",
+en:"Add s/es with He/She/It",
+examples:[
+["He goes","সে যায়"],
+["She reads","সে পড়ে"],
+["It works","এটি কাজ করে"]
+],
+q:[
+{q:"He ___ to school",o:["go","goes","going"],a:"goes",why:"He singular → s/es"},
+{q:"She ___ book",o:["read","reads","reading"],a:"reads",why:"She singular"},
+{q:"It ___ fast",o:["run","runs","running"],a:"runs",why:"It singular"},
+{q:"He ___ football",o:["play","plays","playing"],a:"plays",why:"He rule"},
+{q:"She ___ rice",o:["eat","eats","eating"],a:"eats",why:"She rule"}
+]
+},
+{
+title:"Rule 2: s/es rule",
+bn:"s/sh/ch/x/o শেষে es হয়",
+en:"Add es after special endings",
+examples:[
+["goes","যায়"],
+["watches","দেখে"],
+["fixes","ঠিক করে"]
+],
+q:[
+{q:"He ___ TV",o:["watch","watches","watching"],a:"watches",why:"ch → es"},
+{q:"She ___ box",o:["fix","fixes","fixing"],a:"fixes",why:"x → es"},
+{q:"He ___ bus",o:["go","goes","going"],a:"goes",why:"o → es"},
+{q:"She ___ match",o:["watch","watches","watching"],a:"watches",why:"ch"},
+{q:"He ___ class",o:["teach","teaches","teaching"],a:"teaches",why:"ch rule"}
+]
+},
+{
+title:"Rule 3: Base verb rule",
+bn:"I/We/You/They হলে base verb",
+en:"No change in verb",
+examples:[
+["I go","আমি যাই"],
+["We play","আমরা খেলি"],
+["They eat","তারা খায়"]
+],
+q:[
+{q:"I ___ school",o:["go","goes","going"],a:"go",why:"I → base verb"},
+{q:"We ___ football",o:["play","plays","playing"],a:"play",why:"We rule"},
+{q:"They ___ rice",o:["eat","eats","eating"],a:"eat",why:"They rule"},
+{q:"You ___ fast",o:["run","runs","running"],a:"run",why:"You rule"},
+{q:"I ___ book",o:["read","reads","reading"],a:"read",why:"base verb"}
+]
 }
 ]
 },
 
 wh:{
-
-lesson:[
-"❓ WH Question is used to ask information",
-"❓ WH Question ব্যবহার করা হয় তথ্য জানার জন্য",
-
-"Who = person → মানুষ",
-"What = thing → জিনিস",
-"Where = place → জায়গা"
-],
-
-examples:[
-"✔ What is your name?",
-"✔ What is your name? → তোমার নাম কি?",
-
-"✔ Where do you live?",
-"✔ Where do you live? → তুমি কোথায় থাকো?"
-],
-
-questions:[
+rules:[
 {
-q:"___ is your name?",
-o:["Who","What","Where"],
-a:"What",
-why:"Name জানতে What ব্যবহার করা হয়"
+title:"WH Question Rule",
+bn:"WH words দিয়ে প্রশ্ন করা হয়",
+en:"WH words ask information",
+examples:[
+["Who is he?","সে কে?"],
+["What is this?","এটা কি?"],
+["Where are you?","তুমি কোথায়?"]
+],
+q:[
+{q:"___ is your name?",o:["Who","What","Where"],a:"What",why:"Name → What"},
+{q:"___ is he?",o:["Who","What","Where"],a:"Who",why:"Person"},
+{q:"___ do you live?",o:["Who","What","Where"],a:"Where",why:"Place"},
+{q:"___ is this?",o:["Who","What","Where"],a:"What",why:"Thing"},
+{q:"___ is father?",o:["Who","What","Where"],a:"Who",why:"Person"}
+]
 }
 ]
 },
 
 prep:{
-
-lesson:[
-"📦 Preposition shows position or place",
-"📦 Preposition জায়গা বা অবস্থান বোঝায়",
-
-"in = inside → ভেতরে",
-"on = above → উপরে",
-"under = below → নিচে"
-],
-
-examples:[
-"✔ Cat is on the table",
-"✔ Cat is on the table → বিড়াল টেবিলের উপর আছে",
-
-"✔ Book is in the bag",
-"✔ Book is in the bag → বই ব্যাগের ভিতরে আছে"
-],
-
-questions:[
+rules:[
 {
-q:"Cat is ___ the table",
-o:["on","in","under"],
-a:"on",
-why:"on means surface → উপর"
+title:"Preposition Rule",
+bn:"স্থান বোঝায় in/on/under",
+en:"Shows position",
+examples:[
+["on table","টেবিলের উপর"],
+["in bag","ব্যাগের ভিতরে"],
+["under bed","বিছানার নিচে"]
+],
+q:[
+{q:"Cat is ___ table",o:["on","in","under"],a:"on",why:"surface"},
+{q:"Book is ___ bag",o:["on","in","under"],a:"in",why:"inside"},
+{q:"Dog is ___ bed",o:["on","in","under"],a:"under",why:"below"},
+{q:"Pen is ___ box",o:["on","in","under"],a:"in",why:"inside"},
+{q:"Ball is ___ chair",o:["on","in","under"],a:"under",why:"below"}
+]
 }
 ]
 }
 
 };
 
-function load(topic){
-state.topic=topic;
-state.step=0;
+/* ================= ENGINE ================= */
+
+let state = {topic:"verb",r:0,q:0,mode:"learn"};
+
+function load(t){
+state.topic=t;
+state.r=0;
+state.q=0;
+state.mode="learn";
 render();
 }
 
 function render(){
 
-let t=DATA[state.topic];
-let app=document.getElementById("app");
+let rule = DATA[state.topic].rules[state.r];
+let app = document.getElementById("app");
 
 let html="";
 
-/* STEP 1: LESSON */
-if(state.step===0){
+if(state.mode==="learn"){
 
-html+=`<div class="block"><b>📘 Lesson (English + বাংলা)</b><br><br>`;
+html+=`
+<div class="block">
+<b>${rule.title}</b><br><br>
+<b>English:</b> ${rule.en}<br>
+<b>বাংলা:</b> ${rule.bn}
+</div>
 
-t.lesson.forEach(l=>{
-html+=`<div>${l}</div>`;
-});
+<div class="block">
+<b>Examples</b><br><br>
+${rule.examples.map(e=>`${e[0]} → ${e[1]}`).join("<br>")}
+</div>
 
-html+=`</div>
-<button onclick="next()">👉 Next</button>`;
+<button onclick="startQuiz()">Start Practice</button>
+`;
 }
 
-/* STEP 2: RULE */
-else if(state.step===1 && t.rule){
+else{
 
-html+=`<div class="block"><b>📌 Rule (নিয়ম)</b><br><br>`;
-
-t.rule.forEach(r=>{
-html+=`<div>${r}</div>`;
-});
-
-html+=`</div>
-<button onclick="next()">👉 Next</button>`;
-}
-
-/* STEP 3: EXTRA RULE */
-else if(state.step===2 && t.es_rule){
-
-html+=`<div class="block"><b>🧠 Advanced Rule</b><br><br>`;
-
-t.es_rule.forEach(r=>{
-html+=`<div>${r}</div>`;
-});
-
-html+=`</div>
-<button onclick="next()">👉 Next</button>`;
-}
-
-/* STEP 4: EXAMPLES */
-else if(state.step>=3){
-
-html+=`<div class="block"><b>📌 Examples (English + বাংলা)</b><br><br>`;
-
-t.examples.forEach(e=>{
-html+=`<div>${e}</div>`;
-});
-
-html+=`</div>
-<button onclick="next()">👉 Practice</button>`;
-}
-
-/* QUESTIONS */
-if(state.step>=4){
-
-let q=t.questions[0];
+let q = rule.q[state.q];
 
 html+=`
 <h3>${q.q}</h3>
 `;
 
-q.o.forEach(opt=>{
-html+=`
-<button class="option" onclick="check('${opt}')">${opt}</button>
-`;
+q.o.forEach(o=>{
+html+=`<button class="option" onclick="check('${o}')">${o}</button>`;
 });
 
 html+=`<p id="fb"></p>`;
@@ -319,31 +211,39 @@ html+=`<p id="fb"></p>`;
 app.innerHTML=html;
 }
 
+function startQuiz(){
+state.mode="quiz";
+state.q=0;
+render();
+}
+
 function next(){
-state.step++;
+state.q++;
+if(state.q>=5){
+state.r++;
+if(state.r>=DATA[state.topic].rules.length){
+document.getElementById("app").innerHTML="<h2>Module Complete 🎉</h2>";
+return;
+}
+state.mode="learn";
+}
 render();
 }
 
 function check(opt){
 
-let q=DATA[state.topic].questions[0];
+let rule = DATA[state.topic].rules[state.r];
+let q = rule.q[state.q];
 
 if(opt===q.a){
-document.getElementById("fb").innerHTML=
-`<span class="correct">✔ Correct</span><br><br>
-👉 ${q.why}`;
+addXP();
+document.getElementById("fb").innerHTML="✔ Correct! "+q.why;
 }
 else{
-document.getElementById("fb").innerHTML=
-`<span class="wrong">❌ Wrong</span><br><br>
-✔ Correct Answer: ${q.a}<br><br>
-👉 ${q.why}`;
+document.getElementById("fb").innerHTML="❌ Wrong. Correct: "+q.a+" | "+q.why;
 }
 
-setTimeout(()=>{
-state.step=4;
-render();
-},1200);
+setTimeout(next,1200);
 }
 
 load("verb");
